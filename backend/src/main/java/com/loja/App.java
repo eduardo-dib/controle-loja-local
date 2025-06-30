@@ -12,7 +12,7 @@ public class App {
 
     public static HttpServer startServer() {
         // Define onde estão seus endpoints (pacote com os @Path)
-        final ResourceConfig rc = new ResourceConfig().packages("com.loja.resource");
+        final ResourceConfig rc = new JerseyConfig();
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
