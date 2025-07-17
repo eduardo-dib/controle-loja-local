@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Cliente{
 	
+	private Long id;
 	private String nome;
 	private String sobrenome;
 	private String usuarioInstagram;
@@ -15,6 +16,16 @@ public class Cliente{
 	private MonthDay dataDeAniversario;
 	
 	public Cliente() {}
+	
+	public Cliente(Long id,String nome, String sobrenome, String usuarioInstagram, String endereco, String dataAniversarioStr) {
+		this.id = id;
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.usuarioInstagram = usuarioInstagram;
+        this.endereco = endereco;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+        this.dataDeAniversario = dataDeAniversario.parse(dataAniversarioStr, formatter);
+    }
 	public Cliente(String nome, String sobrenome, String usuarioInstagram, String endereco, String dataAniversarioStr) {
 	        this.nome = nome;
 	        this.sobrenome = sobrenome;
@@ -24,6 +35,13 @@ public class Cliente{
 	        this.dataDeAniversario = dataDeAniversario.parse(dataAniversarioStr, formatter);
 	    }
 	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
 	public String getNome() {
 		return nome;

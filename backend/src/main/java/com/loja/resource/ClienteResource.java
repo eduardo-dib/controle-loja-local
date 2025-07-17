@@ -3,6 +3,7 @@ package com.loja.resource;
 import com.loja.dao.ClienteDAO;
 import com.loja.model.Cliente;
 
+
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import java.util.List;
@@ -43,4 +44,38 @@ public class ClienteResource {
     public Cliente getById(@PathParam("id") Long id) {
     	return dao.getById(id);
     }
+    
+    @PUT
+    @Path("/atualizar/{id}")
+    public Response atualizar(@PathParam("id")Long id, Cliente c) {
+    	try {
+    		dao.atualizar(id, c);
+    		if(c != null) {
+    			return Response.status(Response.Status.OK)
+    					.entity(c)
+    					.build();
+    		}else {
+    			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+    					.entity(c)
+                        .build();
+    		}
+    	}catch(Exception e) {
+    		return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+    				.entity("Erro ao atualizar cliente" + e.getMessage())
+    				.build();    	
+    		}
+    }
+    
+    @DELETE
+    @Path("/deletar/{id}")
+    public Response deletar(@PathParam("id") Long id) {
+        boolean sucesso = dao.deletar(id);
+        if (sucesso) {
+            return Response.ok("Cliente deletado com sucesso.").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Cliente não encontrado.").build();
+        }
+    }
+    
+    
 }

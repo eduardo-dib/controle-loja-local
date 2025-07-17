@@ -2,10 +2,12 @@
 package com.loja.dao;
 
 import com.loja.model.Cliente;
+import com.loja.model.Produto;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 public class ClienteDAO {
 
@@ -89,6 +91,52 @@ public class ClienteDAO {
         }
         return cliente;
     }
+    
+    public Cliente atualizar(Long id, Cliente c) {
+        String sql = "UPDATE produto SET nome = ?, sobrenome = ?, usuarioInstagram = ?, endereco = ?, dataDeAniversario = ? WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, c.getNome());
+            stmt.setString(2, c.getSobrenome());
+            stmt.setString(3, c.getUsuarioInstagram());
+            stmt.setString(4, c.getEndereco());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+            stmt.setString(5, c.getDataDeAniversario().format(formatter));
+            stmt.setLong(5, id);
+
+            int linhasAfetadas = stmt.executeUpdate();
+            if (linhasAfetadas > 0) {
+
+                c.setId(id);
+                return c;
+            } else {
+                return null; 
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public boolean deletar(Long id) {
+        String sql = "DELETE FROM cliente WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            int linhasAfetadas = stmt.executeUpdate();
+
+            return linhasAfetadas > 0; 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     
     
     

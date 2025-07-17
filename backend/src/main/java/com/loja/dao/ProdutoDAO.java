@@ -109,6 +109,22 @@ public class ProdutoDAO {
         }
     }
     
+    public boolean deletar(Long id) {
+        String sql = "DELETE FROM produto WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            int linhasAfetadas = stmt.executeUpdate();
+
+            return linhasAfetadas > 0; 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     
     
 }
