@@ -2,7 +2,7 @@
 package com.loja.dao;
 
 import com.loja.model.Cliente;
-import com.loja.model.Produto;
+
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -3,6 +3,7 @@ package com.loja.dao;
 
 import com.loja.model.Produto;
 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,11 +61,13 @@ public class ProdutoDAO {
         return lista;
     }
     
-    public Produto getById(Long id) {
+    public static Produto getById(Long id) throws Exception{
         Produto produto = null;
         String sql = "SELECT * FROM produto WHERE id = ?";
+
         try (Connection conn = ConnectionFactory.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
 
@@ -73,12 +76,15 @@ public class ProdutoDAO {
                 String descricao = rs.getString("descricao");
                 BigDecimal preco = rs.getBigDecimal("preco");
                 String imagemUrl = rs.getString("imagemUrl");
+
                 produto = new Produto(nome, descricao, preco, imagemUrl);
-               
+                produto.setId(id); 
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); 
         }
+
         return produto;
     }
     

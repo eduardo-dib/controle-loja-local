@@ -8,6 +8,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import java.util.List;
 import jakarta.ws.rs.core.Response;
+import io.swagger.v3.oas.annotations.Operation;
 
 
 
@@ -19,11 +20,13 @@ public class ClienteResource {
     private ClienteDAO dao = new ClienteDAO();
 
     @GET
+    @Operation(summary = "Lista todos os clientes")
     public List<Cliente> listar() {
         return dao.listar();
     }
 
     @POST
+    @Operation(summary = "Salva um cliente")
     public Response salvar(Cliente cliente) {
         try {
             dao.salvar(cliente);
@@ -41,12 +44,14 @@ public class ClienteResource {
     
     @GET
     @Path("/{id}")
+    @Operation(summary = "Retorna um cliente pelo ID")
     public Cliente getById(@PathParam("id") Long id) {
     	return dao.getById(id);
     }
     
     @PUT
     @Path("/atualizar/{id}")
+    @Operation(summary = "Atualiza um produto pelo id")
     public Response atualizar(@PathParam("id")Long id, Cliente c) {
     	try {
     		dao.atualizar(id, c);
@@ -68,6 +73,7 @@ public class ClienteResource {
     
     @DELETE
     @Path("/deletar/{id}")
+    @Operation(summary = "Delete um produto de acordo com o id")
     public Response deletar(@PathParam("id") Long id) {
         boolean sucesso = dao.deletar(id);
         if (sucesso) {
