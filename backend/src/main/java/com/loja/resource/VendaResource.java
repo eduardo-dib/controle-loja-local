@@ -31,7 +31,7 @@ public class VendaResource {
     private ProdutoDAO produtoDAO = new ProdutoDAO();
 
     @POST
-    @Operation(summary = "Lista todos os clientes")
+    @Operation(summary = "Cadastra uma venda")
     public Response salvar(VendaDTO dto) {
         try {
             Venda venda = new Venda();
@@ -65,6 +65,12 @@ public class VendaResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao salvar venda: " + e.getMessage()).build();
         }
+    }
+    
+    @GET
+    @Operation(summary = "Lista todas as vendas")
+    public List<Venda> listar(){
+    	return dao.listar();
     }
 
     }

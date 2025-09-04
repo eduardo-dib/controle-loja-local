@@ -88,6 +88,37 @@ public class ProdutoDAO {
         return produto;
     }
     
+    public static List<Produto> getByVendaId(Long vendaId) {
+        List<Produto> produtos = new ArrayList<>();
+
+        String sql = "SELECT p.* FROM produto p " +
+                     "INNER JOIN venda_produto vp ON p.id = vp.produto_id " +
+                     "WHERE vp.venda_id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setLong(1, vendaId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setPreco(rs.getBigDecimal("preco"));
+                produto.setImagemUrl(rs.getString("imagemUrl"));
+
+                produtos.add(produto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return produtos;
+    }
+
+    
     public Produto atualizar(Long id, Produto p) {
         String sql = "UPDATE produto SET nome = ?, descricao = ?, preco = ?, imagemUrl = ? WHERE id = ?";
 

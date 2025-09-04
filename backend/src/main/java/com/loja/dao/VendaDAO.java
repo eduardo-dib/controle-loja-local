@@ -4,13 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.Statement;
 import com.loja.model.Venda;
 import com.loja.model.Produto;
-
+import com.loja.model.Cliente;
+import com.loja.dao.*;
 
 public class VendaDAO {
+	
+	
 
     public VendaDAO() {
         try (Connection conn = ConnectionFactory.getConnection();
@@ -49,8 +53,7 @@ public class VendaDAO {
         String sqlVendaProduto = "INSERT INTO venda_produtos (venda_id, produto_id) VALUES (?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection()) {
-            conn.setAutoCommit(false); // inicia transação
-
+            conn.setAutoCommit(false); 
             
             PreparedStatement stmtVenda = conn.prepareStatement(sqlVenda, Statement.RETURN_GENERATED_KEYS);
             stmtVenda.setLong(1, venda.getCliente().getId());
@@ -88,9 +91,42 @@ public class VendaDAO {
         }
     }
     
-    public List<Venda> listar(){
-    	
+    public List<Venda> listar() {
+        List<Venda> vendas = new ArrayList<>();
+
+        String sql = "SELECT * FROM vendas";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Venda venda = new Venda();
+                venda.setId(rs.getLong("id"));
+                venda.setValorTotal(rs.getBigDecimal("valor_total"));
+                venda.setDataHora(rs.getTimestamp("data_hora").toLocalDateTime());
+
+                // Buscar cliente
+                long clienteId = rs.getLong("cliente_id");
+                ClienteDAO clienteDAO = new ClienteDAO();
+                Cliente cliente = clienteDAO.getById(clienteId);
+                venda.setCliente(cliente);
+
+                // Buscar produtos da venda
+                ProdutoDAO produtoDAO = new ProdutoDAO();
+                List<Produto> produtos = ProdutoDAO.getByVendaId(venda.getId());
+                venda.setProdutos(produtos);
+
+                vendas.add(venda);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return vendas;
     }
+
     
     
 }

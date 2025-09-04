@@ -3,6 +3,9 @@ import java.util.List;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
 public class Venda {
+  private Long id;
+
+
   private Cliente cliente;
   private List<Produto> produtos;
   private BigDecimal valorTotal;
@@ -15,6 +18,14 @@ public class Venda {
 	this.produtos = produtos;
 	this.valorTotal = valorTotal;
 	this.dataHora = dataHora;
+  }
+  
+  public Long getId() {
+	return id;
+}
+
+  public void setId(Long id) {
+	this.id = id;
   }
 
   public Cliente getCliente() {
