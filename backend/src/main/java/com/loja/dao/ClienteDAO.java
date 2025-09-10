@@ -93,7 +93,7 @@ public class ClienteDAO {
     }
     
     public Cliente atualizar(Long id, Cliente c) {
-        String sql = "UPDATE produto SET nome = ?, sobrenome = ?, usuarioInstagram = ?, endereco = ?, dataDeAniversario = ? WHERE id = ?";
+        String sql = "UPDATE cliente SET nome = ?, sobrenome = ?, usuarioInstagram = ?, endereco = ?, dataDeAniversario = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -102,9 +102,9 @@ public class ClienteDAO {
             stmt.setString(2, c.getSobrenome());
             stmt.setString(3, c.getUsuarioInstagram());
             stmt.setString(4, c.getEndereco());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
             stmt.setString(5, c.getDataDeAniversario().format(formatter));
-            stmt.setLong(5, id);
+            stmt.setLong(6, id); 
 
             int linhasAfetadas = stmt.executeUpdate();
             if (linhasAfetadas > 0) {

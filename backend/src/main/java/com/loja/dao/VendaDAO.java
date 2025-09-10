@@ -114,7 +114,7 @@ public class VendaDAO {
 
                 // Buscar produtos da venda
                 ProdutoDAO produtoDAO = new ProdutoDAO();
-                List<Produto> produtos = ProdutoDAO.getByVendaId(venda.getId());
+                List<Produto> produtos = produtoDAO.getByVendaId(venda.getId());
                 venda.setProdutos(produtos);
 
                 vendas.add(venda);
@@ -125,6 +125,10 @@ public class VendaDAO {
         }
 
         return vendas;
+    }
+    
+    public Venda getByCliente(Long id) {
+    	
     }
 
     

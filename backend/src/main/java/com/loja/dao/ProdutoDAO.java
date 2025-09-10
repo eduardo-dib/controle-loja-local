@@ -72,6 +72,7 @@ public class ProdutoDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+            	
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
                 BigDecimal preco = rs.getBigDecimal("preco");
@@ -92,7 +93,7 @@ public class ProdutoDAO {
         List<Produto> produtos = new ArrayList<>();
 
         String sql = "SELECT p.* FROM produto p " +
-                     "INNER JOIN venda_produto vp ON p.id = vp.produto_id " +
+                     "INNER JOIN venda_produtos vp ON p.id = vp.produto_id " +
                      "WHERE vp.venda_id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();

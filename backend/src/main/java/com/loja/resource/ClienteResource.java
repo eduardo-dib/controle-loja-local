@@ -9,10 +9,12 @@ import jakarta.ws.rs.core.MediaType;
 import java.util.List;
 import jakarta.ws.rs.core.Response;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 
 @Path("/clientes")
+@Tag(name = "Clientes", description = "Endpoints relacionados a clientes da loja")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ClienteResource {
@@ -20,6 +22,7 @@ public class ClienteResource {
     private ClienteDAO dao = new ClienteDAO();
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Lista todos os clientes")
     public List<Cliente> listar() {
         return dao.listar();
