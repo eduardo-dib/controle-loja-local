@@ -12,6 +12,7 @@ import com.loja.model.Produto;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.PathParam;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -71,6 +72,13 @@ public class VendaResource {
     @Operation(summary = "Lista todas as vendas")
     public List<Venda> listar(){
     	return dao.listar();
+    }
+    
+    @GET
+    @Path("/cliente/{id}")
+    @Operation(summary = "Lista as vendas por cliente")
+    public List<Venda> listarPorCliente(@PathParam("id") Long id){
+    	return dao.getByCliente(id);
     }
 
     }

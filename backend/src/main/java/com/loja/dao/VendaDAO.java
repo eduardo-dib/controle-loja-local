@@ -106,13 +106,13 @@ public class VendaDAO {
                 venda.setValorTotal(rs.getBigDecimal("valor_total"));
                 venda.setDataHora(rs.getTimestamp("data_hora").toLocalDateTime());
 
-                // Buscar cliente
+                
                 long clienteId = rs.getLong("cliente_id");
                 ClienteDAO clienteDAO = new ClienteDAO();
                 Cliente cliente = clienteDAO.getById(clienteId);
                 venda.setCliente(cliente);
 
-                // Buscar produtos da venda
+                
                 ProdutoDAO produtoDAO = new ProdutoDAO();
                 List<Produto> produtos = produtoDAO.getByVendaId(venda.getId());
                 venda.setProdutos(produtos);
@@ -127,9 +127,43 @@ public class VendaDAO {
         return vendas;
     }
     
-    public Venda getByCliente(Long id) {
-    	
+    public List<Venda> getByCliente(Long clienteId) {
+        List<Venda> vendas = new ArrayList<>();
+
+        String sql = "SELECT * FROM vendas WHERE cliente_id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, clienteId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Venda venda = new Venda();
+                venda.setId(rs.getLong("id"));
+                venda.setValorTotal(rs.getBigDecimal("valor_total"));
+                venda.setDataHora(rs.getTimestamp("data_hora").toLocalDateTime());
+
+                // Cliente
+                ClienteDAO clienteDAO = new ClienteDAO();
+                Cliente cliente = clienteDAO.getById(clienteId);
+                venda.setCliente(cliente);
+
+                // Produtos da venda
+                ProdutoDAO produtoDAO = new ProdutoDAO();
+                List<Produto> produtos = produtoDAO.getByVendaId(venda.getId());
+                venda.setProdutos(produtos);
+
+                vendas.add(venda);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return vendas;
     }
+
 
     
     
