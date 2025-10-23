@@ -1,4 +1,4 @@
 <template>
-  <h1>Página Inicial</h1>
+  <h1>Boas vindas!</h1>
   <p>Bem-vindo ao seu app Vue limpo!</p>
 </template>

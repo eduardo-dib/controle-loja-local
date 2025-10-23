@@ -6,22 +6,17 @@ import Footer from './components/Footer.vue'
 
 <template>
   <div id="app">
-    
     <Header />
-
-    
     <main>
       <RouterView />
     </main>
-
-    >
     <Footer />
   </div>
 </template>
 
 <style>
 main {
-  min-height: 80vh; /* só pra empurrar o footer mais pra baixo */
+  min-height: 80vh;
   padding: 1rem;
 }
 </style>
